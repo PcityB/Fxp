@@ -51,6 +51,14 @@ const Dashboard: React.FC = () => {
   const totalPatterns = extractedPatterns.length;
   const profitablePatterns = analysisResults.reduce((acc, result) => acc + result.profitable_clusters, 0);
 
+  if (!status) {
+    return (
+      <div className="p-6 text-text-secondary">
+        System status unavailable. Please try again later.
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
