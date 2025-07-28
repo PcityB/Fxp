@@ -17,15 +17,14 @@ logging.basicConfig(
 logger = logging.getLogger('database')
 
 # Get database connection details from environment variables or use defaults
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "forex_pattern_db")
-DB_USER = os.getenv("DB_USER", "forex_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+#DB_HOST = os.getenv("DB_HOST", "localhost")
+#DB_NAME = os.getenv("DB_NAME", "forex_pattern_db")
+#DB_USER = os.getenv("DB_USER", "forex_user")
+#DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 
 # Construct database URL
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
+#DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://")
 # Create SQLAlchemy engine
 engine = create_engine(
     DATABASE_URL,
