@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     secret_key: str = "your-secret-key-change-this-in-production"
     
     # Database Configuration
+    # Note: In production, these defaults are overridden by environment variables
+    # For Supabase: Use the connection string from your Supabase dashboard
     database_url: PostgresDsn = "postgresql://user:password@localhost:5432/xau_patterns"
     test_database_url: PostgresDsn = "postgresql://user:password@localhost:5432/xau_patterns_test"
     

@@ -10,9 +10,15 @@ class Settings(BaseSettings):
     secret_key: str = "your-secret-key-change-this-in-production"
     
     # Supabase Configuration
+    # These should be set in your .env file with actual values from Supabase dashboard
     supabase_url: str = "https://your-project.supabase.co"
     supabase_key: str = "your-anon-key"
     supabase_service_key: str = "your-service-key"
+    
+    # Database Configuration (using Supabase PostgreSQL)
+    # The DATABASE_URL should point to your Supabase PostgreSQL instance
+    database_url: str = "postgresql://postgres:password@db.project.supabase.co:5432/postgres"
+    test_database_url: str = "postgresql://postgres:password@db.project.supabase.co:5432/postgres"
     
     # Redis Configuration (for caching)
     redis_url: RedisDsn = "redis://localhost:6379/0"
