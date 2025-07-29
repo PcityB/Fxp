@@ -97,7 +97,7 @@ Redux Store
 ## Real-time Communication
 
 ```
-WebSocket Connection (ws://localhost:8000/ws)
+WebSocket Connection (ws://j8jmtp-8000.csb.app/ws)
 ├── Job Status Updates
 ├── System Alerts
 ├── Pattern Discovery Notifications

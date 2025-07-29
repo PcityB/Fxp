@@ -58,8 +58,8 @@ docker-compose up
 ### API Documentation
 
 Once running, access the interactive documentation at:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- Swagger UI: https://j8jmtp-8000.csb.app/docs
+- ReDoc: https://j8jmtp-8000.csb.app/redoc
 
 ## Project Structure
 

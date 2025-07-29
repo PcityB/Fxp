@@ -3,6 +3,9 @@ Database connection management for the Forex Pattern Framework.
 Supports both local PostgreSQL and Supabase with automatic SSL configuration.
 """
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base

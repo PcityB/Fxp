@@ -106,7 +106,7 @@ export const analyzePatterns = createAsyncThunk(
     significance_threshold?: number;
     min_occurrences?: number;
   }) => {
-    const response = await fetch('http://localhost:8000/api/analysis/analyze', {
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/analysis/analyze', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export const analyzePatterns = createAsyncThunk(
 export const fetchAnalysisList = createAsyncThunk(
   'analysis/fetchAnalysisList',
   async () => {
-    const response = await fetch('http://localhost:8000/api/analysis/list');
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/analysis/list');
     if (!response.ok) {
       throw new Error('Failed to fetch analysis list');
     }
@@ -136,7 +136,7 @@ export const fetchAnalysisList = createAsyncThunk(
 export const fetchAnalysisDetails = createAsyncThunk(
   'analysis/fetchAnalysisDetails',
   async (timeframe: string) => {
-    const response = await fetch(`http://localhost:8000/api/analysis/${timeframe}`);
+    const response = await fetch(`https://j8jmtp-8000.csb.app/api/analysis/${timeframe}`);
     if (!response.ok) {
       throw new Error('Failed to fetch analysis details');
     }
@@ -147,7 +147,7 @@ export const fetchAnalysisDetails = createAsyncThunk(
 export const fetchAnalysisVisualization = createAsyncThunk(
   'analysis/fetchAnalysisVisualization',
   async ({ timeframe, chartType = 'profitability' }: { timeframe: string; chartType?: string }) => {
-    const response = await fetch(`http://localhost:8000/api/analysis/${timeframe}/visualize?chart_type=${chartType}`);
+    const response = await fetch(`https://j8jmtp-8000.csb.app/api/analysis/${timeframe}/visualize?chart_type=${chartType}`);
     if (!response.ok) {
       throw new Error('Failed to fetch analysis visualization');
     }
@@ -173,7 +173,7 @@ export const runBacktest = createAsyncThunk(
   }) => {
     // This would be a custom backtest endpoint (not in the current API)
     // For now, we'll simulate the backtest process
-    const response = await fetch('http://localhost:8000/api/analysis/backtest', {
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/analysis/backtest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ const analysisSlice = createSlice({
         state.loading = false;
         // Create an analysis job entry
         const job: AnalysisJob = {
-          id: `analysis_${action.payload.timeframe}_${Date.now()}`,
+          id: `analysis_${action.payload.timeframe}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           type: 'pattern_analysis',
           timeframe: action.payload.timeframe,
           status: 'completed',
@@ -352,7 +352,7 @@ const analysisSlice = createSlice({
         state.loading = false;
         // Add backtest result
         const backtestResult: BacktestResult = {
-          id: `backtest_${Date.now()}`,
+          id: `backtest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           pattern_id: action.meta.arg.pattern_id,
           timeframe: action.meta.arg.timeframe,
           test_period: {

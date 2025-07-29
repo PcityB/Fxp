@@ -152,12 +152,12 @@ const PatternDiscovery: React.FC = () => {
 
           {/* Job Monitor */}
           <JobMonitor
-            jobs={extractionJobs.map(job => ({
+            jobs={extractionJobs.map((job, index) => ({
               id: job.id,
               type: 'pattern_extraction',
               status: job.status,
               progress: job.progress,
-              startedAt: new Date(job.parameters ? Date.now() : Date.now()),
+              startedAt: new Date(Date.now() - (index * 1000)), // Ensure unique timestamps
               completedAt: job.status === 'completed' ? new Date() : undefined,
               error: job.error,
               result: job.result,

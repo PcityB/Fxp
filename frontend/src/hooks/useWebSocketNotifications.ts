@@ -7,7 +7,7 @@ interface WebSocketMessage {
   data: any;
 }
 
-const useWebSocketNotifications = (wsUrl: string = 'ws://localhost:8000/ws') => {
+const useWebSocketNotifications = (wsUrl: string = 'ws://j8jmtp-8000.csb.app/ws') => {
   const dispatch = useAppDispatch();
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -16,17 +16,30 @@ const useWebSocketNotifications = (wsUrl: string = 'ws://localhost:8000/ws') => 
   const reconnectDelay = 3000; // 3 seconds
 
   const connect = useCallback(() => {
+    // Prevent multiple connection attempts
+    if (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING) {
+      return;
+    }
+    
     try {
+      // Close existing connection if any
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+      
       wsRef.current = new WebSocket(wsUrl);
 
       wsRef.current.onopen = () => {
         console.log('WebSocket connected');
         dispatch(setConnected(true));
-        dispatch(addNotification({
-          type: 'success',
-          title: 'Connected',
-          message: 'Real-time updates enabled',
-        }));
+        // Only show success notification if we were previously disconnected
+        if (reconnectAttempts.current > 0) {
+          dispatch(addNotification({
+            type: 'success',
+            title: 'Reconnected',
+            message: 'Real-time updates restored',
+          }));
+        }
         reconnectAttempts.current = 0;
       };
 
@@ -90,20 +103,24 @@ const useWebSocketNotifications = (wsUrl: string = 'ws://localhost:8000/ws') => 
       };
 
       wsRef.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
-        dispatch(addNotification({
-          type: 'error',
-          title: 'Connection Error',
-          message: 'WebSocket connection error occurred',
-        }));
+        console.error('WebSocket error occurred');
+        // Don't dispatch notification for every error to avoid spam
+        // Only dispatch if we're not already in a reconnection state
+        if (reconnectAttempts.current === 0) {
+          dispatch(addNotification({
+            type: 'warning',
+            title: 'Connection Issue',
+            message: 'Experiencing connection difficulties. Attempting to reconnect...',
+          }));
+        }
       };
 
       wsRef.current.onclose = (event) => {
         console.log('WebSocket disconnected:', event.code, event.reason);
         dispatch(setConnected(false));
         
-        // Only show disconnection notification if it wasn't a clean close
-        if (event.code !== 1000) {
+        // Only show disconnection notification on first disconnect (not during reconnection attempts)
+        if (event.code !== 1000 && reconnectAttempts.current === 0) {
           dispatch(addNotification({
             type: 'warning',
             title: 'Disconnected',
@@ -128,12 +145,15 @@ const useWebSocketNotifications = (wsUrl: string = 'ws://localhost:8000/ws') => 
         }
       };
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error);
-      dispatch(addNotification({
-        type: 'error',
-        title: 'Connection Failed',
-        message: 'Failed to establish WebSocket connection',
-      }));
+      console.error('Failed to create WebSocket connection');
+      // Only show notification if we're not already trying to reconnect
+      if (reconnectAttempts.current === 0) {
+        dispatch(addNotification({
+          type: 'error',
+          title: 'Connection Failed',
+          message: 'Failed to establish WebSocket connection',
+        }));
+      }
     }
   }, [wsUrl, dispatch]);
 

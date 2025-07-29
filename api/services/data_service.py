@@ -6,8 +6,8 @@ import uuid
 from datetime import datetime
 import logging
 from sqlalchemy.orm import Session
-from db.repository import ProcessedDataRepository
-from db.database import get_db
+from api.db.repository import ProcessedDataRepository
+from api.db.database import get_db
 
 # Configure logging
 logging.basicConfig(

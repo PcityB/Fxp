@@ -7,9 +7,9 @@ import uuid
 from datetime import datetime
 import logging
 from sqlalchemy.orm import Session
-from db.repository import AnalysisRepository, PatternRepository
-from db.database import get_db
-from routers.system import register_task, update_task_progress, complete_task
+from api.db.repository import AnalysisRepository, PatternRepository
+from api.db.database import get_db
+from api.routers.system import register_task, update_task_progress, complete_task
 
 # Configure logging
 logging.basicConfig(

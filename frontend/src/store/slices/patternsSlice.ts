@@ -86,7 +86,7 @@ export const extractPatterns = createAsyncThunk(
     grid_cols?: number;
     n_clusters?: number;
   }) => {
-    const response = await fetch('http://localhost:8000/api/patterns/extract', {
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/patterns/extract', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export const extractPatterns = createAsyncThunk(
 export const fetchPatternsList = createAsyncThunk(
   'patterns/fetchPatternsList',
   async () => {
-    const response = await fetch('http://localhost:8000/api/patterns/list');
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/patterns/list');
     if (!response.ok) {
       throw new Error('Failed to fetch patterns list');
     }
@@ -116,7 +116,7 @@ export const fetchPatternsList = createAsyncThunk(
 export const fetchPatternDetails = createAsyncThunk(
   'patterns/fetchPatternDetails',
   async (timeframe: string) => {
-    const response = await fetch(`http://localhost:8000/api/patterns/${timeframe}`);
+    const response = await fetch(`https://j8jmtp-8000.csb.app/api/patterns/${timeframe}`);
     if (!response.ok) {
       throw new Error('Failed to fetch pattern details');
     }
@@ -127,7 +127,7 @@ export const fetchPatternDetails = createAsyncThunk(
 export const fetchPatternVisualization = createAsyncThunk(
   'patterns/fetchPatternVisualization',
   async ({ timeframe, clusterId }: { timeframe: string; clusterId: number }) => {
-    const response = await fetch(`http://localhost:8000/api/patterns/${timeframe}/visualize/${clusterId}`);
+    const response = await fetch(`https://j8jmtp-8000.csb.app/api/patterns/${timeframe}/visualize/${clusterId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch pattern visualization');
     }
@@ -198,7 +198,7 @@ const patternsSlice = createSlice({
         state.loading = false;
         // Create an extraction job entry
         const job: PatternExtractionJob = {
-          id: `extract_${action.payload.timeframe}_${Date.now()}`,
+          id: `extract_${action.payload.timeframe}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           timeframe: action.payload.timeframe,
           status: 'completed',
           progress: 100,

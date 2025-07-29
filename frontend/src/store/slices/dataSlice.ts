@@ -62,7 +62,7 @@ const initialState: DataState = {
 export const fetchDatasets = createAsyncThunk(
   'data/fetchDatasets',
   async () => {
-    const response = await fetch('http://localhost:8000/api/data/list');
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/data/list');
     if (!response.ok) {
       throw new Error('Failed to fetch datasets');
     }
@@ -78,7 +78,7 @@ export const uploadDataset = createAsyncThunk(
     formData.append('file', file);
     formData.append('timeframe', timeframe);
 
-    const response = await fetch('http://localhost:8000/api/data/upload', {
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/data/upload', {
       method: 'POST',
       body: formData,
     });
@@ -99,7 +99,7 @@ export const preprocessData = createAsyncThunk(
     engineer_features?: boolean;
     normalize?: boolean;
   }) => {
-    const response = await fetch('http://localhost:8000/api/data/preprocess', {
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/data/preprocess', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export const fetchProcessedData = createAsyncThunk(
   'data/fetchProcessedData',
   async ({ timeframe, limit = 100 }: { timeframe: string; limit?: number }) => {
     const response = await fetch(
-      `http://localhost:8000/api/data/processed/${timeframe}?limit=${limit}`
+      `https://j8jmtp-8000.csb.app/api/data/processed/${timeframe}?limit=${limit}`
     );
 
     if (!response.ok) {
@@ -211,7 +211,7 @@ const dataSlice = createSlice({
         state.loading = false;
         // Create a processing job entry
         const job: ProcessingJob = {
-          id: `preprocess_${action.payload.timeframe}_${Date.now()}`,
+          id: `preprocess_${action.payload.timeframe}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           timeframe: action.payload.timeframe,
           status: 'completed',
           progress: 100,

@@ -8,10 +8,10 @@ from datetime import datetime
 import shutil
 import io
 
-from models.data import DataUploadResponse, PreprocessRequest, PreprocessResponse, ProcessedDataResponse
-from services.data_service import DataService
-from db.database import get_db
-from db.repository import ProcessedDataRepository
+from api.models.data import DataUploadResponse, PreprocessRequest, PreprocessResponse, ProcessedDataResponse
+from api.services.data_service import DataService
+from api.db.database import get_db
+from api.db.repository import ProcessedDataRepository
 
 router = APIRouter()
 data_service = DataService()

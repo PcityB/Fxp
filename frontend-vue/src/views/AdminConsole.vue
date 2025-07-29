@@ -90,7 +90,7 @@ const storageTotal = ref(100)
 const activeJobs = ref(0)
 
 const config = ref({
-  apiBaseUrl: 'http://localhost:8000',
+  apiBaseUrl: 'https://j8jmtp-8000.csb.app',
   maxFileSize: 100,
   processingThreads: 4,
   cacheDuration: 24

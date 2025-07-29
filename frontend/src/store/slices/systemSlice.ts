@@ -41,7 +41,7 @@ export interface Notification {
   type: 'info' | 'success' | 'warning' | 'error';
   title: string;
   message: string;
-  timestamp: Date;
+  timestamp: string;
   persistent?: boolean;
   read?: boolean;
 }
@@ -68,7 +68,7 @@ const initialState: SystemState = {
 export const fetchSystemStatus = createAsyncThunk(
   'system/fetchStatus',
   async () => {
-    const response = await fetch('http://localhost:8000/api/system/status');
+    const response = await fetch('https://j8jmtp-8000.csb.app/api/system/status');
     if (!response.ok) {
       throw new Error('Failed to fetch system status');
     }
@@ -79,7 +79,7 @@ export const fetchSystemStatus = createAsyncThunk(
 export const fetchTaskStatus = createAsyncThunk(
   'system/fetchTaskStatus',
   async (taskId: string) => {
-    const response = await fetch(`http://localhost:8000/api/system/tasks/${taskId}`);
+    const response = await fetch(`https://j8jmtp-8000.csb.app/api/system/tasks/${taskId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch task status');
     }
@@ -94,8 +94,8 @@ const systemSlice = createSlice({
     addNotification: (state, action: PayloadAction<Omit<Notification, 'id' | 'timestamp'>>) => {
       const notification: Notification = {
         ...action.payload,
-        id: Date.now().toString(),
-        timestamp: new Date(),
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        timestamp: new Date().toISOString(),
         read: false,
       };
       state.notifications.unshift(notification);

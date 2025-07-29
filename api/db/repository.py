@@ -13,7 +13,7 @@ from sqlalchemy import func, desc, asc
 from datetime import datetime
 import uuid
 
-from db.models import (
+from api.db.models import (
     ForexData, ProcessedData, Pattern, PatternInstance, 
     PatternPerformance, Visualization, SystemSetting
 )

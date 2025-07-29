@@ -8,11 +8,13 @@ from datetime import datetime
 import pickle
 import io
 
-from models.patterns import PatternExtractionRequest, PatternExtractionResponse, PatternDetailsResponse, PatternListResponse
-from services.pattern_service import PatternService
-from db.database import get_db
-from db.repository import PatternRepository
-from db.models import Pattern, Visualization
+from sqlalchemy import func
+
+from api.models.patterns import PatternExtractionRequest, PatternExtractionResponse, PatternDetailsResponse, PatternListResponse
+from api.services.pattern_service import PatternService
+from api.db.database import get_db
+from api.db.repository import PatternRepository
+from api.db.models import Pattern, Visualization
 
 router = APIRouter()
 pattern_service = PatternService()
@@ -69,7 +71,7 @@ async def list_patterns():
                 Pattern.timeframe,
                 Pattern.discovery_timestamp,
                 Pattern.window_size,
-                db.func.count(Pattern.pattern_id).label('pattern_count')
+                func.count(Pattern.pattern_id).label('pattern_count')
             ).group_by(
                 Pattern.timeframe,
                 Pattern.discovery_timestamp,
@@ -80,12 +82,12 @@ async def list_patterns():
             
             for timeframe, discovery_timestamp, window_size, pattern_count in patterns_query:
                 # Get cluster count for this timeframe
-                cluster_count = db.query(db.func.count(db.func.distinct(Pattern.cluster_id))).filter(
+                cluster_count = db.query(func.count(func.distinct(Pattern.cluster_id))).filter(
                     Pattern.timeframe == timeframe
                 ).scalar()
                 
                 # Get total instance count
-                instance_count = db.query(db.func.sum(Pattern.n_occurrences)).filter(
+                instance_count = db.query(func.sum(Pattern.n_occurrences)).filter(
                     Pattern.timeframe == timeframe
                 ).scalar() or 0
                 

@@ -6,7 +6,7 @@ import platform
 from datetime import datetime, timedelta
 import time
 
-from models.system import SystemStatusResponse, TaskStatusResponse
+from api.models.system import SystemStatusResponse, TaskStatusResponse
 
 router = APIRouter()
 

@@ -18,7 +18,7 @@ For setup instructions, see the [PostgreSQL Setup Guide](postgresql_setup.md).
 ## Base URL
 
 ```
-http://localhost:8000
+https://j8jmtp-8000.csb.app
 ```
 
 ## Authentication
@@ -628,7 +628,7 @@ cd /path/to/forex_pattern_framework/api
 python main.py
 ```
 
-The API will be available at `http://localhost:8000`.
+The API will be available at `https://j8jmtp-8000.csb.app`.
 
 ## Database Configuration
 

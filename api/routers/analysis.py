@@ -7,11 +7,13 @@ import json
 from datetime import datetime
 import io
 
-from models.analysis import PatternAnalysisRequest, PatternAnalysisResponse, AnalysisDetailsResponse, AnalysisListResponse
-from services.analysis_service import AnalysisService
-from db.database import get_db
-from db.repository import AnalysisRepository
-from db.models import Pattern, PatternPerformance, Visualization
+from sqlalchemy import func
+
+from api.models.analysis import PatternAnalysisRequest, PatternAnalysisResponse, AnalysisDetailsResponse, AnalysisListResponse
+from api.services.analysis_service import AnalysisService
+from api.db.database import get_db
+from api.db.repository import AnalysisRepository
+from api.db.models import Pattern, PatternPerformance, Visualization
 
 router = APIRouter()
 analysis_service = AnalysisService()
@@ -72,18 +74,18 @@ async def list_analyses():
             
             for timeframe, test_period_start, lookahead_periods, significance_threshold in analyses_query:
                 # Get cluster count for this timeframe
-                cluster_count = db.query(db.func.count(db.func.distinct(Pattern.cluster_id))).filter(
+                cluster_count = db.query(func.count(func.distinct(Pattern.cluster_id))).filter(
                     Pattern.timeframe == timeframe
                 ).scalar() or 0
                 
                 # Get profitable clusters count
-                profitable_clusters = db.query(db.func.count(PatternPerformance.performance_id)).filter(
+                profitable_clusters = db.query(func.count(PatternPerformance.performance_id)).filter(
                     PatternPerformance.timeframe == timeframe,
                     PatternPerformance.mean_return > 0
                 ).scalar() or 0
                 
                 # Get significant clusters count
-                significant_clusters = db.query(db.func.count(PatternPerformance.performance_id)).filter(
+                significant_clusters = db.query(func.count(PatternPerformance.performance_id)).filter(
                     PatternPerformance.timeframe == timeframe,
                     PatternPerformance.is_significant == True
                 ).scalar() or 0

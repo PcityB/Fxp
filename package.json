@@ -1,0 +1,11 @@
+{
+  "name": "fullstack-sandbox",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  },
+  "scripts": {
+    "start": "concurrently \"uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload\" \"cd frontend && pnpm dev\""
+  }
+}
